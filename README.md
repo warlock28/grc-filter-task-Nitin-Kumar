@@ -43,6 +43,9 @@ This project is a production-grade Governance, Risk, and Compliance (GRC) assess
     ```
     The application will run at `http://localhost:3000`.
 
+    <img width="1844" height="895" alt="image" src="https://github.com/user-attachments/assets/5733bb53-b2f0-434b-afc9-217bf837d08a" />
+
+
 ## Deployment (Bonus Feature)
 
 This application can be deployed to free cloud platforms for production use.
@@ -52,6 +55,7 @@ This application can be deployed to free cloud platforms for production use.
 - **Backend:** Deploy to [Render](https://render.com) (Free)
 
 ### Step-by-Step Guide
+
 See [DEPLOYMENT_GUIDE.md](.gemini/antigravity/brain/DEPLOYMENT_GUIDE.md) for detailed instructions on deploying both frontend and backend.
 
 **Required files** (already created):
@@ -62,6 +66,10 @@ See [DEPLOYMENT_GUIDE.md](.gemini/antigravity/brain/DEPLOYMENT_GUIDE.md) for det
 
 
 ## Risk Scoring Logic
+
+<img width="648" height="686" alt="image" src="https://github.com/user-attachments/assets/71bf4617-d7e6-4f14-990b-95d0d48cf8c6" />
+
+
 The system uses a qualitative scoring model based on Risk = Likelihood × Impact.
 
 -   **Fields:**
@@ -75,6 +83,10 @@ The system uses a qualitative scoring model based on Risk = Likelihood × Impact
     -   **Critical (19–25):** Intolerable, immediate executive action required.
 
 ## Heatmap Explanation
+
+<img width="894" height="670" alt="image" src="https://github.com/user-attachments/assets/f2ea1f01-8936-49fd-8de7-07fb6a43c418" />
+
+
 The core visualization is a 5x5 Risk Matrix adhering to standard GRC practices (ISO 31000/NIST).
 -   **Y-Axis:** Likelihood (1-5)
 -   **X-Axis:** Impact (1-5)
@@ -83,6 +95,10 @@ The core visualization is a 5x5 Risk Matrix adhering to standard GRC practices (
 -   **Interaction:** Hover over cells to see the specific assets contributing to that risk cluster.
 
 ## GRC & NIST Context
+
+<img width="1630" height="870" alt="image" src="https://github.com/user-attachments/assets/a566354d-9074-464b-8cbe-b4402cefc86f" />
+
+
 This dashboard embeds GRC hints specifically for higher-level risks.
 -   **High Risks** trigger a hint to "Prioritize per NIST SP 800-30", guiding users to follow formal risk assessment procedures.
 -   **Critical Risks** escalate to "Immediate executive action", aligning with standard incident response protocols.
