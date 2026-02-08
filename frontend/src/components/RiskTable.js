@@ -3,11 +3,12 @@ import { getRiskBadgeClass, getMitigationSuggestion } from '../utils/riskUtils';
 
 /**
  * RiskTable Component
- * Displays risk register with sorting, filtering, and export functionality
+ * Displays risk register with sorting, filtering, search, and export functionality
  */
 function RiskTable({ risks, onFilterChange }) {
     const [sortConfig, setSortConfig] = useState({ key: 'score', direction: 'desc' });
     const [filter, setFilter] = useState('All');
+    const [searchQuery, setSearchQuery] = useState('');
 
     // Handle column sorting
     const handleSort = useCallback((key) => {
@@ -26,11 +27,25 @@ function RiskTable({ risks, onFilterChange }) {
         }
     }, [onFilterChange]);
 
+    // Handle search input change
+    const handleSearchChange = useCallback((event) => {
+        setSearchQuery(event.target.value);
+    }, []);
+
     // Filter and sort risks
     const displayedRisks = useMemo(() => {
         let filtered = filter === 'All'
             ? [...risks]
             : risks.filter((risk) => risk.level === filter);
+
+        // Apply search filter
+        if (searchQuery.trim()) {
+            const query = searchQuery.toLowerCase();
+            filtered = filtered.filter((risk) =>
+                risk.asset.toLowerCase().includes(query) ||
+                risk.threat.toLowerCase().includes(query)
+            );
+        }
 
         filtered.sort((a, b) => {
             const aVal = a[sortConfig.key];
@@ -42,7 +57,7 @@ function RiskTable({ risks, onFilterChange }) {
         });
 
         return filtered;
-    }, [risks, filter, sortConfig]);
+    }, [risks, filter, searchQuery, sortConfig]);
 
     // Export to CSV
     const handleExport = useCallback(() => {
@@ -87,31 +102,59 @@ function RiskTable({ risks, onFilterChange }) {
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 p-5 border-b border-slate-100">
                 <h2 className="section-title">Risk Register</h2>
 
-                <div className="flex items-center gap-3">
-                    <button
-                        onClick={handleExport}
-                        className="btn-secondary flex items-center gap-2"
-                    >
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-                                d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 flex-1 sm:flex-initial">
+                    {/* Search Bar */}
+                    <div className="relative flex-1 sm:flex-initial sm:w-64">
+                        <svg
+                            className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                        >
+                            <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                            />
                         </svg>
-                        Export CSV
-                    </button>
+                        <input
+                            type="text"
+                            value={searchQuery}
+                            onChange={handleSearchChange}
+                            placeholder="Search by asset or threat..."
+                            className="input-field w-full pl-10 py-2"
+                        />
+                    </div>
 
-                    <select
-                        value={filter}
-                        onChange={handleFilterChange}
-                        className="input-field w-36 py-2"
-                    >
-                        <option value="All">All Levels</option>
-                        <option value="Low">Low</option>
-                        <option value="Medium">Medium</option>
-                        <option value="High">High</option>
-                        <option value="Critical">Critical</option>
-                    </select>
+                    {/* Export and Filter */}
+                    <div className="flex items-center gap-3">
+                        <button
+                            onClick={handleExport}
+                            className="btn-secondary flex items-center gap-2"
+                        >
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+                                    d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                            </svg>
+                            Export CSV
+                        </button>
+
+                        <select
+                            value={filter}
+                            onChange={handleFilterChange}
+                            className="input-field w-36 py-2"
+                        >
+                            <option value="All">All Levels</option>
+                            <option value="Low">Low</option>
+                            <option value="Medium">Medium</option>
+                            <option value="High">High</option>
+                            <option value="Critical">Critical</option>
+                        </select>
+                    </div>
                 </div>
             </div>
+
 
             {/* Table */}
             <div className="overflow-x-auto scrollbar-thin">
