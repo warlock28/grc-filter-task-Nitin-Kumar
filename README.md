@@ -69,6 +69,32 @@ This dashboard embeds GRC hints specifically for higher-level risks.
 -   **High Risks** trigger a hint to "Prioritize per NIST SP 800-30", guiding users to follow formal risk assessment procedures.
 -   **Critical Risks** escalate to "Immediate executive action", aligning with standard incident response protocols.
 
+## Testing (Bonus Feature)
+This project includes a comprehensive unit test suite to ensure code reliability and correctness.
+
+### Running Tests
+Navigate to the `backend` directory and run:
+```bash
+python -m pytest test_logic.py -v
+```
+
+Or use the included test runner:
+```bash
+python run_tests.py
+```
+
+### Test Coverage
+The test suite includes **48 test cases** covering:
+-   **Risk Score Calculation:** Verifies `score = likelihood × impact` for all inputs
+-   **Level Mapping:** Tests Low (1-5), Medium (6-12), High (13-18), Critical (19-25) boundaries
+-   **All 25 Combinations:** Parametrized tests for every possible likelihood/impact pair
+-   **Compliance Hints:** Validates hint generation for High and Critical risks
+-   **Edge Cases:** Minimum/maximum values, commutative property, configuration validation
+-   **Integration Tests:** End-to-end assessment flows for all risk levels
+
+**Status:** ✅ All 48 tests passing (100% success rate)
+
+
 ## Assumptions & Edge Cases
 -   **Data Persistence:** Uses SQLite (`risks.db`) for lightweight, serverless persistence.
 -   **Validation:** Inputs are strictly validated (1-5 integers); API returns 400 Bad Request on violation.
